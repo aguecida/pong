@@ -19,6 +19,11 @@ class Game {
     removePlayer(id) {
         let player = this.players.find(player => player.id === id);
         this.players = this.players.filter(player => player.id !== id);
+
+        if (player) {
+            console.log(`Removed player ${player.number}`);
+        }
+
         return player;
     }
 

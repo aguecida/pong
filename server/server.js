@@ -29,11 +29,7 @@ io.on('connection', socket => {
     socket.emit('readyPlayer', player);
 
     socket.on('disconnect', () => {
-        let player = game.removePlayer(socket.id);
-
-        if (player) {
-            console.log(`Player ${player.number} disconnected`);
-        }
+        game.removePlayer(socket.id);
     });
 });
 
