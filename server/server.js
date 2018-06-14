@@ -4,6 +4,7 @@ const path = require('path');
 const socketIO = require('socket.io');
 
 const { Player } = require('./player');
+const { Game } = require('./game');
 
 const publicDir = path.join(__dirname, '../public');
 const port = process.env.PORT || 3000;
@@ -13,34 +14,27 @@ let server = http.createServer(app);
 let io = socketIO(server);
 app.use(express.static(publicDir));
 
+let game = new Game();
 let player1 = null;
-let player2 = null
+let player2 = null;
 
 io.on('connection', socket => {
-    console.log('Client connected');
-
-    if (!player1) {
-        player1 = new Player(socket.id, 1);
-        socket.emit('readyPlayer', player1);
-    }
-    else if (!player2) {
-        player2 = new Player(socket.id, 2);
-        socket.emit('readyPlayer', player2);
-    }
-    else {
-        console.log('Already have two players');
+    if (game.isFull()) {
+        console.log('Disconnecting client: Game is already full');
         socket.disconnect();
         return;
     }
 
-    socket.on('disconnect', () => {
-        console.log('Client disconnected');
+    let player = new Player(socket.id);
+    game.addPlayer(player);
 
-        if (socket.id === player1.id) {
-            player1 = null;
-        }
-        else if (socket.id === player2.id) {
-            player2 = null;
+    socket.emit('readyPlayer', player);
+
+    socket.on('disconnect', () => {
+        let player = game.removePlayer(socket.id);
+
+        if (player) {
+            console.log(`Player ${player.number} disconnected`);
         }
     });
 });
