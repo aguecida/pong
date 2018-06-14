@@ -15,8 +15,6 @@ let io = socketIO(server);
 app.use(express.static(publicDir));
 
 let game = new Game();
-let player1 = null;
-let player2 = null;
 
 io.on('connection', socket => {
     if (game.isFull()) {
