@@ -23,8 +23,7 @@ io.on('connection', socket => {
         return;
     }
 
-    let player = new Player(socket.id);
-    game.addPlayer(player);
+    let player = game.addPlayer(socket.id);
 
     socket.emit('readyPlayer', player);
 
