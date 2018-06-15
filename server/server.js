@@ -3,7 +3,7 @@ const express = require('express');
 const path = require('path');
 const socketIO = require('socket.io');
 
-const { Game } = require('./game');
+const { Game } = require('./models/game');
 
 const publicDir = path.join(__dirname, '../public');
 const port = process.env.PORT || 3000;
