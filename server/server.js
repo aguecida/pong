@@ -3,7 +3,6 @@ const express = require('express');
 const path = require('path');
 const socketIO = require('socket.io');
 
-const { Player } = require('./player');
 const { Game } = require('./game');
 
 const publicDir = path.join(__dirname, '../public');
@@ -26,6 +25,11 @@ io.on('connection', socket => {
     let player = game.addPlayer(socket.id);
 
     socket.emit('readyPlayer', player);
+
+    socket.on('movePaddle', direction => {
+        let player = game.getPlayerById(socket.id);
+        io.emit('notifyPaddleMove', { player, direction });
+    });
 
     socket.on('disconnect', () => {
         game.removePlayer(socket.id);
