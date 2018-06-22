@@ -1,8 +1,11 @@
 const { Player } = require('./player');
+const { Ball } = require('./ball');
 
 class Game {
     constructor() {
         this.players = [];
+        this.ball = new Ball();
+        this.interval = null;
     }
 
     addPlayer(id) {
@@ -40,6 +43,18 @@ class Game {
 
     getPlayerByNumber(number) {
         return this.players.find(player => player.number === number);
+    }
+
+    start(callback) {
+        this.interval = setInterval(() => {
+            let newPosition = this.ball.moveBall();
+            callback(newPosition);
+        }, 1000);
+    }
+
+    stop() {
+        clearInterval(this.interval);
+        this.ball.position = this.ball.startingPosition;
     }
 }
 

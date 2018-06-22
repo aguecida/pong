@@ -26,13 +26,31 @@ io.on('connection', socket => {
 
     socket.emit('readyPlayer', player);
 
+    if (game.isFull()) {
+        game.start(position => {
+            io.emit('notifyBallMove', { position });
+        });
+    }
+    
     socket.on('movePaddle', direction => {
         let player = game.getPlayerById(socket.id);
-        io.emit('notifyPaddleMove', { player, direction });
+
+        if (direction === 'up') {
+            player.moveUp();
+        }
+        else if (direction === 'down') {
+            position = player.moveDown();
+        }
+        else {
+            throw new Error('Invalid direction');
+        }
+
+        io.emit('notifyPlayerMove', player);
     });
 
     socket.on('disconnect', () => {
         game.removePlayer(socket.id);
+        if (!game.isFull()) game.stop();
     });
 });
 
