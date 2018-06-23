@@ -47,7 +47,13 @@ class Game {
 
     start(callback) {
         this.interval = setInterval(() => {
-            let newPosition = this.ball.moveBall();
+            let newPosition = this.ball.moveBall(this.players);
+
+            if (!newPosition) {
+                this.stop();
+                return;
+            }
+
             callback(newPosition);
         }, 50);
     }
