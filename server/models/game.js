@@ -49,12 +49,12 @@ class Game {
         this.interval = setInterval(() => {
             let newPosition = this.ball.moveBall();
             callback(newPosition);
-        }, 1000);
+        }, 50);
     }
 
     stop() {
         clearInterval(this.interval);
-        this.ball.position = this.ball.startingPosition;
+        this.ball.position = { x: 50, y: 50 };
     }
 }
 

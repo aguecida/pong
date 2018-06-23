@@ -24,7 +24,7 @@ io.on('connection', socket => {
 
     let player = game.addPlayer(socket.id);
 
-    socket.emit('readyPlayer', player);
+    io.emit('readyPlayer', { player, players: game.players });
 
     if (game.isFull()) {
         game.start(position => {
@@ -49,8 +49,9 @@ io.on('connection', socket => {
     });
 
     socket.on('disconnect', () => {
-        game.removePlayer(socket.id);
+        let player = game.removePlayer(socket.id);
         if (!game.isFull()) game.stop();
+        io.emit('playerLeft', player);
     });
 });
 

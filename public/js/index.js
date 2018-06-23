@@ -5,16 +5,19 @@ var ballPosition = { x: 50, y: 50 };
 let socket = io();
 
 socket.on('connect', () => {
-    console.log('Connected to server');
+    context = document.getElementById('table').getContext('2d');
 });
 
 socket.on('disconnect', () => {
-    console.log('Disconnected from server');
     document.onkeydown = null;
 });
 
-socket.on('readyPlayer', player => {
-    console.log(`Ready player ${player.number}`);
+socket.on('playerLeft', player => {
+    clearPlayer(player);
+});
+
+socket.on('readyPlayer', data => {
+    data.players.forEach(player => drawPlayer(player));
 
     document.onkeydown = e => {
         if (e.keyCode === keys.up) {
@@ -27,25 +30,21 @@ socket.on('readyPlayer', player => {
 });
 
 socket.on('notifyBallMove', ball => {
-    console.log(`New ball position is ${ball.position}`);
-    
     clearBall();
     ballPosition = ball.position;
     drawBall();
+    drawNet();
 });
 
 socket.on('notifyPlayerMove', player => {
-    clearPaddle(player);
+    clearPlayer(player);
     drawPlayer(player);
 });
 
 function onLoad() {
     context = document.getElementById('table').getContext('2d');
-    
     drawTable();
     drawNet();
-    //drawPlayerOnePaddle();
-    //drawPlayerTwoPaddle();
 }
 
 function drawTable() {
@@ -71,7 +70,7 @@ function drawPlayer(player) {
     }
 }
 
-function clearPaddle(player) {
+function clearPlayer(player) {
     context.fillStyle = '#777';
     for (let i = 0; i < 400; i += 5) {
         context.fillRect(player.position.x, i, 5, 5);
