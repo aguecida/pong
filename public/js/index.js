@@ -23,7 +23,8 @@ socket.on('gameOver', winner => {
 });
 
 socket.on('playerLeft', player => {
-    clearPlayer(player);
+    setStatusText(`Waiting for player ${player.number}...`);
+    drawTable();
 });
 
 socket.on('readyPlayer', data => {
