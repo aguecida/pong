@@ -3,6 +3,7 @@ var interval = null;
 var keyState = {};
 var keys = { up: 38, down: 40 };
 var ballPosition = { x: 50, y: 50 };
+var ready = false;
 
 let socket = io();
 
@@ -37,17 +38,21 @@ socket.on('readyPlayer', data => {
 
     data.players.forEach(player => drawPlayer(player));
    
-    window.addEventListener('keydown', keyDown);
-    window.addEventListener('keyup', keyUp);
-
-    interval = setInterval(() => {
-        if (keyState[keys.up]){
-            socket.emit('movePaddle', 'up');
-        }
-        if (keyState[keys.down]){
-            socket.emit('movePaddle', 'down');
-        }
-    }, 75);
+    if (!ready) {
+        window.addEventListener('keydown', keyDown);
+        window.addEventListener('keyup', keyUp);
+    
+        interval = setInterval(() => {
+            if (keyState[keys.up]){
+                socket.emit('movePaddle', 'up');
+            }
+            if (keyState[keys.down]){
+                socket.emit('movePaddle', 'down');
+            }
+        }, 50);
+    }
+    
+    ready = true;
 });
 
 socket.on('notifyBallMove', position => {
