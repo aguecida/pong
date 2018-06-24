@@ -55,7 +55,7 @@ class Game {
             }
 
             callback(newPosition);
-        }, 50);
+        }, 100);
     }
 
     stop() {

@@ -31,7 +31,7 @@ socket.on('readyPlayer', data => {
         if (keyState[keys.down]){
             socket.emit('movePaddle', 'down');
         }
-    }, 40);
+    }, 50);
 });
 
 socket.on('notifyBallMove', ball => {
