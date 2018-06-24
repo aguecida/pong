@@ -12,7 +12,7 @@ socket.on('connect', () => {
 });
 
 socket.on('disconnect', () => {
-    document.onkeydown = null;
+    
 });
 
 socket.on('gameOver', winner => {
@@ -21,6 +21,7 @@ socket.on('gameOver', winner => {
     clearInterval(interval);
     window.removeEventListener('keydown', keyDown);
     window.removeEventListener('keyup', keyUp);
+    socket.disconnect();
 });
 
 socket.on('playerLeft', player => {

@@ -57,7 +57,7 @@ class Game {
             }
 
             moveBall(newPosition);
-        }, 50);
+        }, 40);
     }
 
     stop() {
