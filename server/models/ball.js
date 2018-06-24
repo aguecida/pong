@@ -50,19 +50,39 @@ class Ball {
         }
 
         if (this.position.x === player1.position.x + 5) {
-            if (this.direction === 'NW' && (this.position.y >= player1.position.y && this.position.y <= player1.position.y + 25)) {
-                this.direction = 'NE';
+            if (this.direction === 'NW') {
+                if (this.position.y >= player1.position.y && this.position.y <= player1.position.y + 15) {
+                    this.direction = 'NE';
+                }
+                else if (this.position.y >= player1.position.y + 20 && this.position.y <= player1.position.y + 25) {
+                    this.direction = 'SE'; // Hits corner
+                }
             }
-            else if (this.direction === 'SW' && (this.position.y >= player1.position.y - 5 && this.position.y <= player1.position.y + 20)) {
-                this.direction = 'SE';
+            else if (this.direction === 'SW') {
+                if (this.position.y >= player1.position.y + 5 && this.position.y <= player1.position.y + 20) {
+                    this.direction = 'SE';
+                }
+                else if (this.position.y >= player1.position.y - 5 && this.position.y <= player1.position.y) {
+                    this.direction = 'NE'; // Hits corner
+                }
             }
         }
         else if (this.position.x === player2.position.x - 5) {
-            if (this.direction === 'NE' && (this.position.y >= player2.position.y && this.position.y <= player2.position.y + 25)) {
-                this.direction = 'NW';
+            if (this.direction === 'NE') {
+                if (this.position.y >= player2.position.y && this.position.y <= player2.position.y + 15) {
+                    this.direction = 'NW';
+                }
+                else if (this.position.y >= player2.position.y + 20 && this.position.y <= player2.position.y + 25) {
+                    this.direction = 'SW'; // Hits corner
+                }
             }
-            else if (this.direction === 'SE'  && (this.position.y >= player2.position.y - 5 && this.position.y <= player2.position.y + 20)) {
-                this.direction = 'SW';
+            else if (this.direction === 'SE') {
+                if (this.position.y >= player2.position.y + 5 && this.position.y <= player2.position.y + 20) {
+                    this.direction = 'SW';
+                }
+                else if (this.position.y >= player2.position.y - 5 && this.position.y <= player2.position.y) {
+                    this.direction = 'NW'; // Hits corner
+                }
             }
         }
 
