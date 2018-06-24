@@ -1,11 +1,15 @@
 #table {
     border: 1px solid #777;
     outline: none !important;
-    margin: 0 auto;
+    margin: 10px auto;
     position: absolute;
     top: 40px;
     left: 0;
     right: 0;
     width: 600px;
     height: 400px;
+}
+
+#status-text {
+    text-align: center;
 }

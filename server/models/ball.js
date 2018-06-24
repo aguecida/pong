@@ -29,9 +29,8 @@ class Ball {
                 throw new Error('Invalid direction');
         }
 
-        if (this.position.x === 0 || this.position.x === 500) {
-            return;
-        }
+        if (this.position.x < 0) return 2; // Player 2 wins
+        if (this.position.x > 295) return 1; // Player 1 wins
 
         if (this.position.y === 0) {
             if (this.direction === 'NE') {
@@ -51,18 +50,18 @@ class Ball {
         }
 
         if (this.position.x === player1.position.x + 5) {
-            if (this.direction === 'NW' && (this.position.y >= player1.position.y + 5 && this.position.y <= player1.position.y + 25)) {
+            if (this.direction === 'NW' && (this.position.y >= player1.position.y && this.position.y <= player1.position.y + 25)) {
                 this.direction = 'NE';
             }
-            else if (this.direction === 'SW' && (this.position.y >= player1.position.y - 5 && this.position.y <= player1.position.y + 15)) {
+            else if (this.direction === 'SW' && (this.position.y >= player1.position.y - 5 && this.position.y <= player1.position.y + 20)) {
                 this.direction = 'SE';
             }
         }
         else if (this.position.x === player2.position.x - 5) {
-            if (this.direction === 'NE' && (this.position.y >= player2.position.y + 5 && this.position.y <= player2.position.y + 25)) {
+            if (this.direction === 'NE' && (this.position.y >= player2.position.y && this.position.y <= player2.position.y + 25)) {
                 this.direction = 'NW';
             }
-            else if (this.direction === 'SE'  && (this.position.y >= player2.position.y - 5 && this.position.y <= player2.position.y + 15)) {
+            else if (this.direction === 'SE'  && (this.position.y >= player2.position.y - 5 && this.position.y <= player2.position.y + 20)) {
                 this.direction = 'SW';
             }
         }

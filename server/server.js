@@ -28,7 +28,10 @@ io.on('connection', socket => {
 
     if (game.isFull()) {
         game.start(position => {
-            io.emit('notifyBallMove', { position });
+            io.emit('notifyBallMove', position);
+        }, winner => {
+            io.emit('gameOver', winner);
+            game = new Game();
         });
     }
     

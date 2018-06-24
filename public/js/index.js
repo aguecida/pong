@@ -14,15 +14,30 @@ socket.on('disconnect', () => {
     document.onkeydown = null;
 });
 
+socket.on('gameOver', winner => {
+    setStatusText(`Game over. Player ${winner} wins.`);
+    drawTable();
+    clearInterval(interval);
+    window.removeEventListener('keydown', keyDown);
+    window.removeEventListener('keyup', keyUp);
+});
+
 socket.on('playerLeft', player => {
     clearPlayer(player);
 });
 
 socket.on('readyPlayer', data => {
+    clearStatusText();
+
+    if (data.players.length === 1) {
+        let waitingFor = data.player.number === 1 ? 2 : 1;
+        setStatusText(`Waiting for player ${waitingFor}...`);
+    }
+
     data.players.forEach(player => drawPlayer(player));
    
-    window.addEventListener('keydown', e => keyState[e.keyCode || e.which] = true, true);
-    window.addEventListener('keyup', e => keyState[e.keyCode || e.which] = false, true);
+    window.addEventListener('keydown', keyDown);
+    window.addEventListener('keyup', keyUp);
 
     interval = setInterval(() => {
         if (keyState[keys.up]){
@@ -31,12 +46,13 @@ socket.on('readyPlayer', data => {
         if (keyState[keys.down]){
             socket.emit('movePaddle', 'down');
         }
-    }, 50);
+    }, 75);
 });
 
-socket.on('notifyBallMove', ball => {
+socket.on('notifyBallMove', position => {
+    clearStatusText();
     clearBall();
-    ballPosition = ball.position;
+    ballPosition = position;
     drawBall();
     drawNet();
 });
@@ -92,4 +108,20 @@ function clearBall() {
     let { x, y } = ballPosition;
     context.fillStyle = '#777';
     context.fillRect(x, y, 5, 5);
+}
+
+function setStatusText(text) {
+    document.getElementById('status-text').innerText = text;
+}
+
+function clearStatusText() {
+    document.getElementById('status-text').innerText = '';
+}
+
+function keyDown(e) {
+    keyState[e.keyCode || e.which] = true;
+}
+
+function keyUp(e) {
+    keyState[e.keyCode || e.which] = false;
 }

@@ -45,16 +45,18 @@ class Game {
         return this.players.find(player => player.number === number);
     }
 
-    start(callback) {
+    start(moveBall, endGame) {
         this.interval = setInterval(() => {
             let newPosition = this.ball.moveBall(this.players);
 
-            if (!newPosition) {
+            // Game over
+            if (newPosition === 1 || newPosition === 2) {
                 this.stop();
+                endGame(newPosition);
                 return;
             }
 
-            callback(newPosition);
+            moveBall(newPosition);
         }, 100);
     }
 
